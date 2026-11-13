@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Taller de Motos Pro</title>
+<style>
+/* ===== TOKENS (tema oscuro neumórfico: negro carbono + gris asfalto + naranja) ===== */
+:root{--bg:#0f172a;--sd:#060a14;--sl:#1e293b;--ac:#f97316;--tx:#e8edf5;--mut:#94a3b8;--g:#2ecc71;--y:#f5b301;--r:#ff4d4f;color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:90px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{font-weight:800;font-size:17px}.logo i{font-style:normal;color:var(--ac)}
+.seg{display:flex;border-radius:14px;padding:4px;box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.seg button{margin:0;width:auto;padding:8px 14px;font-size:13px;background:none;color:var(--mut);box-shadow:none}
+.seg button.on{background:var(--ac);color:#fff;box-shadow:0 0 14px #ff6b0066}
+main{padding:6px 14px;max-width:680px;margin:0 auto}
+.card{background:var(--bg);border-radius:20px;padding:16px;margin:14px 0;box-shadow:7px 7px 16px var(--sd),-7px -7px 16px var(--sl);animation:up .35s both}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h2,h3{margin:0 0 6px}.mut{color:var(--mut);font-size:13px}
+label{display:block;font-size:12px;color:var(--mut);margin:12px 0 5px}
+input,select,textarea{width:100%;padding:13px;border:0;border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;box-shadow:inset 4px 4px 8px var(--sd),inset -4px -4px 8px var(--sl);outline:none}
+input:focus,select:focus,textarea:focus{box-shadow:inset 4px 4px 8px var(--sd),inset -4px -4px 8px var(--sl),0 0 0 2px var(--ac)}
+textarea{min-height:64px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:13px;background:var(--ac);color:#fff;width:100%;margin-top:14px;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 16px #ff6b0055}
+button:active{transform:scale(.96)}
+button.sec{background:var(--bg);color:var(--tx);box-shadow:4px 4px 9px var(--sd),-4px -4px 9px var(--sl);width:auto;margin:0;padding:8px 12px;font-size:13px}
+button.wa{background:#1fa855;box-shadow:0 4px 16px #1fa85544}
+button.del{background:none;color:var(--r);box-shadow:none;width:auto;margin:0;padding:4px 6px;font-size:12px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--bg);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -6px 18px var(--sd);z-index:6}
+nav button{flex:1;margin:0;background:none;box-shadow:none;color:var(--mut);font-size:11px;padding:10px 0;border-radius:0;position:relative}
+nav button.on{color:var(--ac)}nav b{display:block;font-size:20px}
+.bd{position:absolute;top:4px;left:calc(50% + 6px);background:var(--r);color:#fff;border-radius:9px;font-size:10px;padding:0 6px}
+.pill{display:inline-block;font-size:11px;font-weight:800;border-radius:20px;padding:3px 10px;border:1px solid;white-space:nowrap}
+.l0{color:var(--g)}.l1{color:var(--y)}.l2{color:var(--r)}.l-1{color:var(--mut)}
+.top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.placa{font-weight:800;font-size:19px;letter-spacing:1.5px}
+.bar{height:9px;border-radius:9px;margin-top:8px;box-shadow:inset 2px 2px 4px var(--sd),inset -2px -2px 4px var(--sl);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:9px;transition:width .8s}
+.f0{background:var(--g)}.f1{background:var(--y)}.f2{background:var(--r)}.f-1{background:var(--mut)}
+.sem{text-align:center;padding:6px 0}
+.dot{width:92px;height:92px;border-radius:50%;margin:6px auto 10px;display:grid;place-items:center;font-size:38px;box-shadow:0 0 28px currentColor,inset 0 0 0 4px currentColor}
+.therm{height:16px}
+.comp{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--sl)}
+.comp:last-child{border:0}.comp .ic{font-size:24px}.comp .bx{flex:1}
+.st{display:flex;margin-top:14px}.s{flex:1;text-align:center;position:relative;font-size:10px;color:var(--mut)}
+.s b{position:relative;z-index:1;display:grid;place-items:center;width:38px;height:38px;margin:0 auto 6px;border-radius:50%;background:var(--bg);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl);font-size:16px;filter:grayscale(1)}
+.s:not(:last-child)::after{content:"";position:absolute;top:18px;left:50%;width:100%;height:3px;background:var(--sd)}
+.s.done::after{background:var(--ac)}.s.done b{filter:none;box-shadow:0 0 0 2px var(--ac)}.s.done,.s.cur{color:var(--tx)}
+.s.cur b{filter:none;background:var(--ac);animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #ff6b00aa}100%{box-shadow:0 0 0 14px #ff6b0000}}
+.ck{display:inline-flex;align-items:center;gap:7px;margin:6px 6px 0 0;padding:8px 13px;border-radius:20px;color:var(--tx);font-size:13px;cursor:pointer;box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl)}
+.ck input{width:auto;padding:0;box-shadow:none;accent-color:var(--ac)}
+header{flex-wrap:wrap}.mdl{position:fixed;inset:0;background:#000b;display:grid;place-items:center;padding:20px;z-index:20}.mdl[hidden]{display:none}.mdl .card{width:100%;max-width:380px;margin:0}
+.tab{display:none}.tab.on{display:block}
+.hist{border-top:1px dashed var(--sl);margin-top:10px;padding-top:6px}.hist div{padding:7px 0;border-bottom:1px solid var(--sl);font-size:13px}
+.chips span{display:inline-block;margin:6px 6px 0 0}
+#msg{position:fixed;left:50%;transform:translateX(-50%);bottom:96px;background:var(--ac);color:#fff;padding:10px 18px;border-radius:20px;font-weight:600;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+#msg.show{opacity:1}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🏍️ Taller<i>Moto</i></div>
+  <div class="seg"><button id="sg-cliente" onclick="portal('cliente')">🏍️ Portal Clientes</button><button id="sg-taller" onclick="portal('taller')">🔐 Administrador</button></div><button id="logout" class="sec" hidden onclick="logout()">Cerrar sesión</button>
+</header>
+
+<!-- ================= PORTAL TALLER ================= -->
+<main id="taller" hidden>
+  <section id="t-buscar" class="tab on">
+    <input id="q" type="search" placeholder="🔎 Placa o nombre del cliente…" oninput="rBuscar()" autocomplete="off">
+    <div id="res"></div>
+  </section>
+  <section id="t-alertas" class="tab">
+    <div class="card"><h3>Alertas Vencidas</h3><div class="mut">Motos con componentes vencidos o próximos a vencer según su último kilometraje.</div></div>
+    <div id="alts"></div>
+  </section>
+  <section id="t-moto" class="tab"><div class="card">
+    <h3>Registrar cliente y moto</h3>
+    <label>Nombre del cliente</label><input id="c-nom" autocomplete="off">
+    <label>Teléfono / WhatsApp</label><input id="c-tel" type="tel" inputmode="tel">
+    <label>Placa</label><input id="c-pla" autocapitalize="characters" autocomplete="off">
+    <label>Marca / modelo</label><input id="c-mod" autocomplete="off">
+    <label>Kilometraje actual</label><input id="c-km" type="number" inputmode="numeric" min="0">
+    <button onclick="saveMoto()">Guardar moto</button>
+    <p class="mut">Si la placa ya existe, se actualizan sus datos.</p>
+  </div></section>
+  <section id="t-servicio" class="tab"><div class="card">
+    <h3>Nueva orden de trabajo</h3>
+    <div class="row"><div><label>Fecha</label><input id="s-fec" type="date"></div><div><label>Placa</label><input id="s-pla" list="placas" autocapitalize="characters" autocomplete="off"></div></div>
+    <datalist id="placas"></datalist>
+    <label>Kilometraje del servicio</label><input id="s-km" type="number" inputmode="numeric" min="0">
+    <label>Tipo de trabajo</label><select id="s-tip"></select>
+    <label>Repuestos cambiados</label><input id="s-rep" placeholder="Ej: filtro de aceite, pastillas" autocomplete="off"><label>Observaciones técnicas</label><textarea id="s-obs"></textarea>
+    <div class="row"><div><label>Próximo aceite (km)</label><input id="s-pkm" type="number" inputmode="numeric"></div><div><label>Próximo aceite (fecha)</label><input id="s-pfe" type="date"></div></div>
+    <button onclick="saveServ()">Guardar servicio</button>
+    <p class="mut">Cambio de aceite sin próximo indicado: se sugiere +3,000 km y +3 meses.</p>
+  </div></section>
+  <section id="t-ajustes" class="tab"><div class="card">
+    <h3>Ajustes del taller</h3>
+    <label>Nombre del taller</label><input id="a-nom">
+    <label>WhatsApp del taller (para citas de clientes)</label><input id="a-wa" type="tel" inputmode="tel" placeholder="987654321">
+    <label>Código de país (se antepone a números de 9 dígitos)</label><input id="a-cc" inputmode="numeric">
+    <button onclick="saveCfg()">Guardar ajustes</button>
+    <button class="sec" style="margin-top:12px;width:100%" onclick="exportar()">⬇️ Exportar datos (JSON)</button>
+<button class="sec" style="margin-top:10px;width:100%" onclick="$('imp').click()">⬆️ Importar datos (JSON)</button><input id="imp" type="file" accept=".json,application/json" onchange="importar(this)" hidden>
+</div><div class="card"><h3>🔐 Credenciales de administrador</h3>
+<label>Usuario</label><input id="a-u" autocapitalize="none"><label>Nueva contraseña (mínimo 6 caracteres)</label><input id="a-pw" type="password" autocomplete="new-password"><button onclick="cambiarClave()">Actualizar credenciales</button>
+    <p class="mut">Los datos se guardan solo en este dispositivo (navegador). Exporta un respaldo con frecuencia.</p>
+  </div></section>
+</main>
+
+<!-- ================= PORTAL CLIENTE ================= -->
+<main id="cliente" hidden>
+  <div class="card">
+    <h2>Consulta tu moto</h2><div class="mut">Ingresa tu placa y kilometraje actual para ver el estado de tu moto.</div>
+    <div class="row"><div><label>Placa</label><input id="k-pla" autocapitalize="characters" autocomplete="off"></div><div><label>Kilometraje actual (opcional)</label><input id="k-km" type="number" inputmode="numeric" min="0"></div></div>
+    <button onclick="consultar()">Consultar ahora</button>
+  </div>
+  <div id="k-out"></div>
+  <div class="card">
+    <h3>📅 Agendar cita / Cotizar mantenimiento</h3>
+    <div class="mut">Usa la placa y el kilometraje de arriba. Tu reserva se envía al WhatsApp del taller.</div>
+    <label>Tu nombre (opcional)</label><input id="b-nom" autocomplete="name">
+    <label>Tipo de servicio</label>
+    <select id="b-srv" onchange="$('b-oil').hidden=this.value!='Cambio de aceite'"><option>Cambio de aceite</option><option>Frenos</option><option>Kit de arrastre</option><option>Transmisión</option><option>Mantenimiento General</option><option>Falla eléctrica / mecánica</option></select>
+    <div id="b-oil"><label>Tipo de aceite</label><select id="b-ao"><option>Mineral</option><option>Semisintético</option><option>Sintético</option></select></div>
+    <label>Síntomas</label>
+    <div id="b-chk"><label class="ck"><input type="checkbox" value="Falta potencia">Falta potencia</label><label class="ck"><input type="checkbox" value="Ruido al frenar">Ruido al frenar</label><label class="ck"><input type="checkbox" value="Frena poco">Frena poco</label><label class="ck"><input type="checkbox" value="Batería descargada">Batería descargada</label><label class="ck"><input type="checkbox" value="Humo blanco">Humo blanco</label><label class="ck"><input type="checkbox" value="Cadena suelta">Cadena suelta</label></div>
+    <label>Detalles adicionales o repuestos</label><textarea id="b-det"></textarea>
+    <div class="row"><div><label>Fecha preferida</label><input id="b-f" type="date" onchange="citaEdit=true"></div><div><label>Turno</label><select id="b-t"><option>Mañana</option><option>Tarde</option></select></div></div>
+    <button class="wa" onclick="agendar()">📲 Confirmar Cita por WhatsApp</button>
+  </div>
+</main>
+
+<nav id="nav" hidden>
+  <button data-t="buscar" class="on"><b>🔎</b>Buscar</button>
+  <button data-t="alertas"><b>⚠️</b>Alertas<span class="bd" id="bdg" hidden></span></button>
+  <button data-t="moto"><b>👤</b>Moto</button>
+  <button data-t="servicio"><b>🔧</b>Orden</button>
+  <button data-t="ajustes"><b>⚙️</b>Ajustes</button>
+</nav>
+<div id="login" class="mdl" hidden><div class="card"><h3>🔐 Acceso Administrador</h3><div class="mut">Solo personal del taller.</div>
+<label>ID de usuario</label><input id="l-u" autocomplete="username" autocapitalize="none">
+<label>Contraseña</label><input id="l-p" type="password" autocomplete="current-password" onkeydown="if(event.key=='Enter')entrar()">
+<div id="l-e" class="l2" hidden style="margin-top:10px;font-weight:700">⚠️ Credenciales inválidas</div>
+<button onclick="entrar()">Ingresar</button><button class="sec" style="width:100%;margin-top:10px" onclick="$('login').hidden=true">Cancelar</button></div></div>
+<div id="msg"></div>
+
+<script>
+/* ===== 1. DATOS (localStorage, misma clave que la versión anterior) ===== */
+var TALLER_WA="51922684664"; /* WhatsApp oficial del taller */
+var KEY="taller_motos_v1",db={motos:[],servicios:[],cfg:{nom:"Taller de Motos",wa:TALLER_WA,cc:"51"}};
+function load(){try{var r=localStorage.getItem(KEY);if(r){var d=JSON.parse(r);db.motos=d.motos||[];db.servicios=d.servicios||[];db.cfg=Object.assign(db.cfg,d.cfg||{})}}catch(e){}if(!db.cfg.wa)db.cfg.wa=TALLER_WA;if(!db.cfg.v){db.motos.forEach(function(m){if(m.fase>=2)m.fase=m.fase==2?1:m.fase-1});db.cfg.v=2;save()}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function norm(p){return String(p||"").toUpperCase().replace(/[^A-Z0-9-]/g,"")}
+function dstr(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function hoy(){return dstr(new Date())}
+function fmt(f){if(!f)return"";var p=f.split("-");return p[2]+"/"+p[1]+"/"+p[0]}
+function addDays(n){var d=new Date();d.setDate(d.getDate()+n);return dstr(d)}
+function diasHasta(f){return Math.round((new Date(f+"T00:00:00")-new Date(hoy()+"T00:00:00"))/864e5)}
+function toast(t){var m=$("msg");m.textContent=t;m.className="show";setTimeout(function(){m.className=""},2200)}
+function servDe(p){return db.servicios.filter(function(s){return s.placa===p}).sort(function(a,b){return a.fecha<b.fecha?1:a.fecha>b.fecha?-1:b.id-a.id})}
+function km(n){return Number(n).toLocaleString("es")+" km"}
+
+/* ===== 2. REGLAS DE MANTENIMIENTO ===== */
+var TIPOS=["Cambio de aceite","Mantenimiento general","Frenos","Kit de arrastre y cadena","Limpieza/tensado de cadena","Transmisión","Eléctrico","Llantas","Otro"];
+var COMPS=[
+ {id:"aceite",n:"Cambio de aceite",i:"🛢️",int:3000,warn:2500,t:["Cambio de aceite"]},
+ {id:"cad",n:"Limpieza y tensado de cadena",i:"⛓️",int:1000,warn:850,t:["Limpieza/tensado de cadena","Kit de arrastre y cadena","Transmisión"]},
+ {id:"kit",n:"Cambio de kit de arrastre",i:"⚙️",int:15000,warn:13500,t:["Kit de arrastre y cadena"]},
+ {id:"fre",n:"Pastillas y líquido de frenos",i:"🛑",int:5000,warn:4250,t:["Frenos"]},
+ {id:"gen",n:"Mantenimiento general / afinamiento",i:"🔧",int:10000,warn:8500,t:["Mantenimiento general"]}];
+var LV={"-1":"Sin registro","0":"Al día","1":"Próximo","2":"Vencido"};
+/* Evalúa un componente: nivel -1 sin registro, 0 verde, 1 amarillo, 2 rojo */
+function evalC(c,p,k){
+  var s=servDe(p).find(function(x){return c.t.indexOf(x.tipo)>-1});
+  if(!s)return{c:c,lvl:-1};
+  var nx=(c.id=="aceite"&&s.pkm)?+s.pkm:s.km+c.int, rest=nx-k, since=c.int-rest;
+  var lvl=rest<=0?2:(since>=c.warn?1:0);
+  if(c.id=="aceite"&&s.pfe&&diasHasta(s.pfe)<0)lvl=2;
+  return{c:c,lvl:lvl,nx:nx,rest:rest,pct:Math.max(3,Math.min(100,since/c.int*100))};
+}
+function evalAll(p,k){var ev=COMPS.map(function(c){return evalC(c,p,k)});
+  var w=-1,pc=0;ev.forEach(function(e){if(e.lvl>w)w=e.lvl;if(e.lvl>=0&&e.pct>pc)pc=e.pct});return{ev:ev,w:w,pc:pc}}
+function pill(l){return'<span class="pill l'+l+'">'+(l==2?"🔴 ":l==1?"🟡 ":l==0?"🟢 ":"")+LV[l]+'</span>'}
+
+/* ===== 3. WHATSAPP ===== */
+function numWA(t){var d=String(t||"").replace(/\D/g,"");if(d&&d.length<=9)d=db.cfg.cc+d;return d}
+function openWA(tel,msg){window.open("https://wa.me/"+numWA(tel)+"?text="+encodeURIComponent(msg),"_blank","noopener")}
+
+/* ===== 4. PORTAL TALLER ===== */
+var FASES=["Recibido","En diagnóstico","En reparación","Listo para recoger"],FI=["📥","🔍","🔧","✅"];
+function saveMoto(){
+  var nom=$("c-nom").value.trim(),pla=norm($("c-pla").value);
+  if(!nom||!pla){toast("Falta nombre o placa");return}
+  var i=db.motos.findIndex(function(x){return x.placa===pla}),old=i>=0?db.motos[i]:{};
+  var m={cliente:nom,tel:$("c-tel").value.trim(),placa:pla,modelo:$("c-mod").value.trim(),km:+$("c-km").value||0,fase:old.fase==null?-1:old.fase,fasef:old.fasef};
+  if(i>=0)db.motos[i]=m;else db.motos.push(m);
+  save();["c-nom","c-tel","c-pla","c-mod","c-km"].forEach(function(x){$(x).value=""});
+  refresh();toast("Moto guardada ✓");tab("buscar");$("q").value=pla;rBuscar();
+}
+function saveServ(){
+  var pla=norm($("s-pla").value),m=db.motos.find(function(x){return x.placa===pla});
+  if(!m){toast("Esa placa no está registrada");return}
+  var fec=$("s-fec").value||hoy(),k=+$("s-km").value||0,tip=$("s-tip").value,pkm=$("s-pkm").value?+$("s-pkm").value:null,pfe=$("s-pfe").value||null;
+  if(tip=="Cambio de aceite"){if(pkm===null&&k)pkm=k+3000;if(!pfe){var d=new Date(fec+"T00:00:00");d.setMonth(d.getMonth()+3);pfe=dstr(d)}}
+  db.servicios.push({id:Date.now(),fecha:fec,placa:pla,km:k,tipo:tip,obs:$("s-obs").value.trim(),rep:$("s-rep").value.trim(),pkm:pkm,pfe:pfe});
+  if(k>m.km)m.km=k;if(m.fase==null||m.fase<0){m.fase=0;m.fasef=hoy()}
+  save();["s-km","s-obs","s-rep","s-pkm","s-pfe","s-pla"].forEach(function(x){$(x).value=""});
+  refresh();toast("Servicio guardado ✓");tab("buscar");$("q").value=pla;rBuscar();
+}
+function saveCfg(){db.cfg.nom=$("a-nom").value.trim()||"Taller de Motos";db.cfg.wa=$("a-wa").value.trim()||TALLER_WA;db.cfg.cc=$("a-cc").value.replace(/\D/g,"")||"51";save();toast("Ajustes guardados ✓")}
+function delServ(id){if(confirm("¿Borrar este servicio?")){db.servicios=db.servicios.filter(function(s){return s.id!==id});save();refresh()}}
+function delMoto(p){if(confirm("¿Eliminar "+p+" y todo su historial?")){db.motos=db.motos.filter(function(m){return m.placa!==p});db.servicios=db.servicios.filter(function(s){return s.placa!==p});save();refresh()}}
+function editMoto(p){var m=db.motos.find(function(x){return x.placa===p});$("c-nom").value=m.cliente;$("c-tel").value=m.tel;$("c-pla").value=m.placa;$("c-mod").value=m.modelo;$("c-km").value=m.km;tab("moto")}
+function newServ(p){var m=db.motos.find(function(x){return x.placa===p});$("s-pla").value=p;$("s-fec").value=hoy();$("s-km").value=m.km;tab("servicio")}
+function setFase(p,v){var m=db.motos.find(function(x){return x.placa===p});m.fase=+v;m.fasef=hoy();save();refresh();toast(+v>=0?"Estado: "+FASES[+v]:"Sin orden activa")}
+function avisoEstado(p){var m=db.motos.find(function(x){return x.placa===p});
+  openWA(m.tel,"Hola "+m.cliente+", te escribe "+db.cfg.nom+". Estado de tu moto "+m.modelo+" (placa "+m.placa+"): "+FASES[m.fase].toUpperCase()+(m.fase==FASES.length-1?". ¡Ya puedes pasar a recogerla!":"."))}
+/* Recordatorio al cliente; si no tiene teléfono, se abre el WhatsApp del taller */
+function alertaWA(p){var m=db.motos.find(function(x){return x.placa===p}),r=evalAll(p,m.km);
+  var e=r.ev[0].lvl>0?r.ev[0]:r.ev.filter(function(x){return x.lvl>0}).sort(function(a,b){return b.lvl-a.lvl})[0];
+  var t="👋 Hola "+m.cliente+", te saludamos del "+db.cfg.nom+". Notamos que tu moto "+m.placa+" registra "+km(m.km)+" y su "+e.c.n.toLowerCase()+" está "+(e.lvl==2?"VENCIDO":"PRÓXIMO")+". Te recomendamos agendar tu cita para evitar desgastes en el motor. ¿Te reservamos un cupo para esta semana?";
+  openWA(m.tel||TALLER_WA,t)}
+
+function card(m,full){
+  var r=evalAll(m.placa,m.km),h=servDe(m.placa);
+  var s='<div class="card"><div class="top"><div><div class="placa">'+esc(m.placa)+'</div><div>'+esc(m.modelo)+'</div></div>'+pill(r.w)+'</div>'
+   +'<div class="mut">👤 '+esc(m.cliente)+' · '+esc(m.tel)+' · '+km(m.km)+'</div><div class="bar"><i class="f'+r.w+'" style="width:'+(r.w<0?0:r.pc)+'%"></i></div>';
+  if(full){
+    s+='<label>Estado de la reparación</label><select onchange="setFase(\''+m.placa+'\',this.value)"><option value="-1"'+(m.fase<0?" selected":"")+'>Sin orden activa</option>'
+      +FASES.map(function(f,i){return'<option value="'+i+'"'+(m.fase===i?" selected":"")+'>'+(i+1)+". "+f+'</option>'}).join("")+'</select>';
+    if(m.fase>=0&&m.fase<FASES.length-1)s+='<button style="margin-top:10px" onclick="setFase(\''+m.placa+'\','+(m.fase+1)+')">▶ Avanzar a: '+FASES[m.fase+1]+'</button>';if(m.fase>=0)s+='<button class="wa" style="margin-top:10px" onclick="avisoEstado(\''+m.placa+'\')">📲 Notificar estado por WhatsApp</button>';
+    s+='<div class="hist">'+(h.length?h.map(function(x){return'<div><b>'+fmt(x.fecha)+'</b> · '+esc(x.tipo)+' · '+km(x.km)+(x.rep?'<br><span class="mut">🔩 '+esc(x.rep)+'</span>':'')+(x.obs?'<br><span class="mut">'+esc(x.obs)+'</span>':'')
+      +((x.pkm||x.pfe)?'<br><span class="mut">Próx. aceite: '+(x.pkm?km(x.pkm):"")+(x.pkm&&x.pfe?" / ":"")+fmt(x.pfe)+'</span>':'')+' <button class="del" onclick="delServ('+x.id+')">borrar</button></div>'}).join(""):'<div class="mut">Sin servicios registrados.</div>')+'</div>'
+      +'<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="sec" onclick="newServ(\''+m.placa+'\')">+ Servicio</button><button class="sec" onclick="editMoto(\''+m.placa+'\')">Editar</button><button class="del" onclick="delMoto(\''+m.placa+'\')">Eliminar</button></div>';
+  }
+  return s+'</div>';
+}
+function rBuscar(){
+  var q=$("q").value.trim().toLowerCase().replace(/\s+/g,"");
+  var l=db.motos.filter(function(m){return!q||m.placa.toLowerCase().indexOf(q)>-1||m.cliente.toLowerCase().replace(/\s+/g,"").indexOf(q)>-1});
+  $("res").innerHTML=!db.motos.length?'<div class="card mut">Aún no hay motos. Ve a “Moto” para registrar la primera.</div>':!l.length?'<div class="card mut">Sin resultados.</div>':l.map(function(m){return card(m,true)}).join("");
+}
+function rAlertas(){
+  var l=db.motos.map(function(m){return{m:m,r:evalAll(m.placa,m.km)}}).filter(function(x){return x.r.w>0}).sort(function(a,b){return b.r.w-a.r.w});
+  $("alts").innerHTML=l.length?l.map(function(x){
+    var chips=x.r.ev.filter(function(e){return e.lvl>0}).map(function(e){return'<span class="pill l'+e.lvl+'">'+e.c.i+" "+e.c.n+'</span>'}).join("");
+    return card(x.m,false).replace(/<\/div>$/,'<div class="chips">'+chips+'</div><button class="wa" onclick="alertaWA(\''+x.m.placa+'\')">📲 Enviar Recordatorio por WhatsApp</button></div>')}).join(""):'<div class="card mut">✅ Ninguna moto con mantenimiento pendiente.</div>';
+  var b=$("bdg");b.hidden=!l.length;b.textContent=l.length;
+}
+function refresh(){
+  $("placas").innerHTML=db.motos.map(function(m){return'<option value="'+m.placa+'">'+esc(m.cliente)+'</option>'}).join("");
+  rBuscar();rAlertas();
+}
+function tab(t){
+  document.querySelectorAll(".tab").forEach(function(e){e.classList.remove("on")});
+  document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t===t)});
+  $("t-"+t).classList.add("on");if(t=="servicio"&&!$("s-fec").value)$("s-fec").value=hoy();window.scrollTo(0,0);
+}
+
+/* ===== 5. PORTAL CLIENTE ===== */
+var C=null,citaEdit=false;
+function consultar(){
+  var p=norm($("k-pla").value),o=$("k-out");
+  if(!p){o.innerHTML='<div class="card l2">Ingresa tu placa.</div>';return}
+  var m=db.motos.find(function(x){return x.placa===p});
+  if(!m){o.innerHTML='<div class="card"><b class="l1">No encontramos esa placa.</b><div class="mut">Acércate al taller para registrar tu moto.</div></div>';return}
+  var k=$("k-km").value===""?m.km:+$("k-km").value,r=evalAll(p,k);C={m:m,k:k,r:r};citaEdit=false;
+  var tit=r.w==2?"Mantenimiento vencido":r.w==1?"Próximo a vencer":r.w==0?"Tu moto está al día":"Sin historial suficiente";
+  var h='<div class="card sem"><div class="mut">'+esc(m.modelo)+' · <b>'+esc(p)+'</b></div><div class="dot l'+r.w+'">'+(r.w==2?"🔴":r.w==1?"🟡":r.w==0?"🟢":"❔")+'</div><h2 class="l'+r.w+'">'+tit+'</h2>'
+   +'<div class="mut">Termómetro de desgaste</div><div class="bar therm"><i class="f'+r.w+'" style="width:'+(r.w<0?0:r.pc)+'%"></i></div></div>'
+   +'<div class="card"><h3>Estado por componente</h3>'+r.ev.map(function(e){
+      var d=e.lvl<0?"Sin registro: consulta en el taller.":e.rest<=0?"Vencido hace "+km(-e.rest):"Faltan "+km(e.rest)+" (a los "+km(e.nx)+")";
+      return'<div class="comp"><div class="ic">'+e.c.i+'</div><div class="bx"><div class="top"><b>'+e.c.n+'</b>'+pill(e.lvl)+'</div><div class="mut">'+d+'</div><div class="bar"><i class="f'+e.lvl+'" style="width:'+(e.lvl<0?0:e.pct)+'%"></i></div></div></div>'}).join("")+'</div>'
+   +'<div class="card"><h3>🧮 Calculadora de uso diario</h3><label>¿Cuántos km recorres al día?</label><input id="k-d" type="number" inputmode="numeric" value="30" min="1" oninput="calc()"><div id="k-calc"></div></div>'
+   +'<div class="card"><h3>🛠️ Seguimiento de reparación</h3>'+(m.fase>=0?'<div class="mut">Actualizado: '+fmt(m.fasef)+'</div><div class="st">'+FASES.map(function(n,i){return'<div class="s '+(i<m.fase?"done":i==m.fase?"cur":"")+'"><b>'+FI[i]+'</b>'+n+'</div>'}).join("")+'</div>':'<div class="mut">No hay una reparación en curso para tu moto.</div>')+'</div>'
+   ;
+  o.innerHTML=h;calc();
+}
+/* Predice fecha = hoy + km restantes / km diarios */
+function calc(){
+  var d=+$("k-d").value;if(!C)return;
+  function f(e){if(e.lvl<0)return{t:"Sin registro",f:null};if(e.rest<=0)return{t:"¡Ya te toca! Vencido",f:hoy()};
+    if(!d||d<1)return{t:"—",f:null};var n=Math.ceil(e.rest/d),fe=addDays(n);return{t:"≈ "+fmt(fe)+" (en "+n+" días)",f:fe}}
+  var a=f(C.r.ev[0]),g=f(C.r.ev[4]);C.fecha=a.f||g.f||hoy();
+  $("k-calc").innerHTML='<div class="comp"><div class="ic">🛢️</div><div><div class="mut">Próximo cambio de aceite</div><b>'+a.t+'</b></div></div><div class="comp"><div class="ic">🔧</div><div><div class="mut">Próximo servicio general</div><b>'+g.t+'</b></div></div>';
+  if(!citaEdit)$("b-f").value=C.fecha;
+}
+/* Reserva / cotización: arma el mensaje estructurado y abre wa.me/51922684664 */
+function agendar(){
+  var p=norm($("k-pla").value),k=$("k-km").value;
+  if(!p){toast("Ingresa tu placa arriba");$("k-pla").focus();return}
+  var nom=$("b-nom").value.trim()||"Cliente",srv=$("b-srv").value+($("b-srv").value=="Cambio de aceite"?" ("+$("b-ao").value+")":""),det=$("b-det").value.trim();
+  var sint=Array.prototype.map.call(document.querySelectorAll("#b-chk input:checked"),function(x){return x.value});
+  if(det)sint.push(det);
+  var diag="Sin consulta previa (el cliente no usó el semáforo)";
+  if(C&&C.m.placa===p){var pe=C.r.ev.filter(function(e){return e.lvl>0}).sort(function(a,b){return b.lvl-a.lvl});
+    diag=pe.length?pe.map(function(e){return e.c.n+(e.lvl==2?" vencido"+(e.rest<0?" por "+km(-e.rest):""):" próximo (faltan "+km(e.rest)+")")}).join("; "):"Todo al día"}
+  var fe=$("b-f").value?fmt($("b-f").value):"A coordinar";
+  var t="🛠️ *NUEVA SOLICITUD DE CITA - TALLER DE MOTOS*\n──────────────────────────────\n👤 *Cliente:* "+nom+"\n🏍️ *Placa:* "+p+" | *Km Actual:* "+(k||"No indicado")+" km\n⚙️ *Servicio:* "+srv+"\n📝 *Detalles/Fallas:* "+(sint.length?sint.join(", "):"Ninguno indicado")+"\n📅 *Fecha / Hora:* "+fe+" - "+$("b-t").value+"\n──────────────────────────────\n*Diagnóstico Web:* "+diag+"\n\nHola, quisiera confirmar la recepción de esta orden para llevar mi moto.";
+  window.open("https://wa.me/"+TALLER_WA+"?text="+encodeURIComponent(t),"_blank","noopener");
+}
+
+/* ===== 6. NAVEGACIÓN, RESPALDO E INICIO ===== */
+/* ===== AUTENTICACIÓN (del lado del cliente: ver nota de seguridad) ===== */
+var AUTH=false;try{AUTH=sessionStorage.getItem("tm_auth")=="1"}catch(e){}
+function hash(s){var enc=new TextEncoder().encode("tm|"+s);
+  if(window.crypto&&crypto.subtle)return crypto.subtle.digest("SHA-256",enc).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")});
+  var h=5381;for(var i=0;i<enc.length;i++)h=((h<<5)+h+enc[i])|0;return Promise.resolve("d"+h)}
+function entrar(){var u=$("l-u").value.trim().toLowerCase(),p=$("l-p").value;
+  hash(p).then(function(h){
+    var ok=u==(db.cfg.user||"admin")&&(db.cfg.ph?h==db.cfg.ph:p=="taller2026");
+    if(!ok){$("l-e").hidden=false;$("l-p").value="";return}
+    if(!db.cfg.ph){db.cfg.ph=h;save()}
+    AUTH=true;try{sessionStorage.setItem("tm_auth","1")}catch(e){}
+    $("login").hidden=true;$("l-p").value="";portal("taller");toast("Sesión iniciada ✓")})}
+function logout(){AUTH=false;try{sessionStorage.removeItem("tm_auth")}catch(e){}portal("cliente");toast("Sesión cerrada")}
+function cambiarClave(){var u=$("a-u").value.trim().toLowerCase(),p=$("a-pw").value;
+  if(!u||p.length<6){toast("Usuario y contraseña (mín. 6)");return}
+  hash(p).then(function(h){db.cfg.user=u;db.cfg.ph=h;save();$("a-pw").value="";toast("Credenciales actualizadas ✓")})}
+function portal(p){
+  if(p=="taller"&&!AUTH){portal("cliente");$("login").hidden=false;$("l-e").hidden=true;setTimeout(function(){$("l-u").focus()},60);return}
+  var t=p=="taller";$("taller").hidden=!t;$("cliente").hidden=t;$("nav").hidden=!t;
+  $("sg-taller").className=t?"on":"";$("sg-cliente").className=t?"":"on";$("logout").hidden=!AUTH;
+  if(location.hash!="#"+p)location.hash=p;window.scrollTo(0,0);
+}
+/* Respaldo JSON: no incluye usuario ni contraseña, y al importar se conservan los actuales */
+async function exportar(){
+  var j=JSON.stringify({motos:db.motos,servicios:db.servicios,cfg:{nom:db.cfg.nom,wa:db.cfg.wa,cc:db.cfg.cc,v:db.cfg.v}},null,1),fn="respaldo-taller-"+hoy()+".json";
+  try{var d=window.claude?await claude.use("downloads"):null;
+    if(d){await d.save({filename:fn,data:j});toast("Respaldo listo ✓");return}}catch(e){if(e&&e.code=="not_granted")return}
+  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([j],{type:"application/json"}));a.download=fn;a.click()}
+function importar(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(){try{var d=JSON.parse(r.result);if(!Array.isArray(d.motos)||!Array.isArray(d.servicios))throw 0;
+    if(!confirm("Esto reemplaza los datos actuales. ¿Continuar?"))return;
+    var u=db.cfg.user,ph=db.cfg.ph;db.motos=d.motos;db.servicios=d.servicios;db.cfg=Object.assign(db.cfg,d.cfg||{});db.cfg.user=u;db.cfg.ph=ph;save();init();toast("Datos importados ✓")}catch(e){toast("Archivo inválido")}inp.value=""};
+  r.readAsText(f)}
+function init(){
+  $("s-tip").innerHTML=TIPOS.map(function(t){return"<option>"+t+"</option>"}).join("");
+  $("b-f").min=hoy();$("a-u").value=db.cfg.user||"admin";$("a-nom").value=db.cfg.nom;$("a-wa").value=db.cfg.wa;$("a-cc").value=db.cfg.cc;refresh();
+}
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){tab(b.dataset.t)}});
+window.addEventListener("hashchange",function(){var h=location.hash.slice(1);if(h=="cliente"||h=="taller")portal(h)});
+load();init();portal(location.hash=="#taller"?"taller":"cliente");
+</script>
+</body>
+</html>
